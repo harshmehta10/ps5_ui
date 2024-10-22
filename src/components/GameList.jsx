@@ -16,13 +16,13 @@ import witcher_bg from "../assets/games/witcher3_bg.webp";
 
 const GameList = () => {
   const games = [
-    { name: "fortnite", src: fortnite, bgimg: fortnite_bg },
+    { name: "Fortnite", src: fortnite, bgimg: fortnite_bg },
     { name: "rdr2", src: rdr2, bgimg: rdr2_bg },
-    { name: "skyrim", src: skyrim, bgimg: skyrim_bg },
-    { name: "spiderman", src: spiderman, bgimg: spiderman_bg },
-    { name: "tekken", src: tekken, bgimg: tekken_bg },
-    { name: "uncharted", src: uncharted, bgimg: uncharted_bg },
-    { name: "witcher", src: witcher, bgimg: witcher_bg },
+    { name: "Skyrim", src: skyrim, bgimg: skyrim_bg },
+    { name: "Spiderman", src: spiderman, bgimg: spiderman_bg },
+    { name: "Tekken", src: tekken, bgimg: tekken_bg },
+    { name: "Uncharted", src: uncharted, bgimg: uncharted_bg },
+    { name: "Witcher 3", src: witcher, bgimg: witcher_bg },
   ];
 
   // Default selected game is the first one (fortnite)
@@ -33,16 +33,16 @@ const GameList = () => {
   };
 
   return (
-    <div className="h-screen w-screen relative">
+    <div className="min-h-screen min-w-screen max-h-screen max-w-screen w-full h-full relative">
       {/* Background image container */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat sm:object-cover md:object-cover"
         style={{
           backgroundImage: `url(${
             games.find((game) => game.name === selectedGame)?.bgimg ||
             games[0].bgimg
           })`,
-          transition: "background 0.3s ease-in-out",
+          transition: "background 0.4s ease-in-out",
         }}
       >
         {/* Adding opacity overlay */}
@@ -50,34 +50,36 @@ const GameList = () => {
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 flex items-center justify-center space-x-10 pt-40 transition-all duration-300 ease-in-out">
+      <div className="relative z-10 flex items-center justify-center space-x-2 sm:space-x-4 md:space-x-6 lg:space-x-10 pt-20 md:pt-40 transition-all duration-300 ease-in-out">
         {games.map((game) => (
           <div
             key={game.name}
             className={`transition-all duration-300 ease-in-out cursor-pointer ${
               selectedGame === game.name
-                ? "transform scale-150 z-20" // Enlarges the selected game
-                : "transform scale-100 " // Shrinks others
+                ? "transform scale-110 md:scale-125 lg:scale-150 z-20" // Enlarges the selected game
+                : "transform scale-75 sm:scale-90 md:scale-100 opacity-60" // Shrinks others
             }`}
             onClick={() => handleClick(game.name)}
           >
             <img
               src={game.src}
               alt={game.name}
-              className="w-32 h-32 object-cover rounded-2xl"
+              className="w-12 h-12 sm:w-20 sm:h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 object-cover sm:object-cover md:object-cover rounded-2xl"
             />
-            <p className="text-white mt-2 text-center">{game.name}</p>
+            <p className="text-white mt-2 text-xs sm:text-sm md:text-base lg:text-lg text-center">
+              {game.name}
+            </p>
           </div>
         ))}
       </div>
 
       {/* Game Title and Play Button */}
       {selectedGame && (
-        <div className="absolute bottom-10 left-0 right-0 text-center z-10">
-          <h2 className="text-5xl text-white font-bold mb-4">
+        <div className="absolute bottom-5 sm:bottom-10 left-0 right-0 mx-5 sm:mx-10 z-10 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl text-white font-bold mb-2 sm:mb-4">
             {games.find((game) => game.name === selectedGame)?.name}
           </h2>
-          <button className="px-6 py-3 bg-gray-900 text-white text-lg rounded-lg">
+          <button className="px-8 py-2  bg-gray-500  shadow-xl shadow-black text-white text-sm sm:text-lg rounded-lg">
             Play
           </button>
         </div>
