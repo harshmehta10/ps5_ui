@@ -1,16 +1,18 @@
-import { useState } from "react";
-
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Profile from "./profile/Profile";
-
-import GameList from "./components/GameList";
+import Login from "./components/Login"; // The login component
+import GameList from "./components/GameList"; // The games UI component
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <GameList />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/games" element={<GameList />} />
+      </Routes>
+    </Router>
   );
 }
 

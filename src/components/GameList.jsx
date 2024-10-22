@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState } from "react";
 import fortnite from "../assets/games/fortnite.jpeg";
 import rdr2 from "../assets/games/rdr2.jpeg";
 import skyrim from "../assets/games/skyrim.webp";
@@ -13,30 +13,13 @@ import spiderman_bg from "../assets/games/spiderman_bg.webp";
 import tekken_bg from "../assets/games/tekken_bg.jpeg";
 import uncharted_bg from "../assets/games/uncharted_bg.jpeg";
 import witcher_bg from "../assets/games/witcher3_bg.webp";
-import Avatar from "../assets/Avatar.png";
-import { TbSearch } from "react-icons/tb";
-import { IoSettingsSharp } from "react-icons/io5";
 
 const GameList = () => {
-  const [bgimg, setBgimg] = useState(fortnite_bg);
-  const [date, setDate] = useState(new Date());
-  useEffect(() => {
-    const timerID = setInterval(() => tick(), 1000);
-    return () => clearInterval(timerID);
-  }, []);
-
-  const tick = useCallback(() => {
-    setDate(new Date());
-  }, []);
-
-  const options = { hour: "2-digit", minute: "2-digit", hour12: true };
-  const timeString = useMemo(
-    () => date.toLocaleTimeString("en-GB", options),
-    [date]
-  );
-  const handleClick = (bg) => {
-    setBgimg(bg);
+  const [selectedGame, setSelectedGame] = useState(null);
+  const handleClick = (bgimg, gameName) => {
+    setSelectedGame(gameName);
   };
+
   const games = [
     {
       name: "fortnite",
@@ -78,41 +61,40 @@ const GameList = () => {
   return (
     <div
       className="h-screen w-screen"
-      style={{ backgroundImage: `url(${bgimg})`, backgroundSize: "cover" }}
+      style={{
+        backgroundImage: `url(${
+          games.find((game) => game.name === selectedGame)?.bgimg || fortnite_bg
+        })`,
+        backgroundSize: "cover",
+      }}
     >
-      <div className="flex items-center justify-between px-8 text-white">
-        <div className="flex items-center space-x-4 cursor-pointer">
-          <div>Games</div>
-          <div>Media</div>
-        </div>
-        <div className="flex items-center space-x-7 cursor-pointer">
-          <div className="text-xl">
-            <TbSearch />
+      <div className="flex px-6 items-center space-x-7 pt-40 overflow-hidden">
+        {games.map((game) => (
+          <div
+            key={game.name}
+            className={`transition-all duration-500 ease-in-out ${
+              selectedGame === game.name
+                ? "transform scale-10"
+                : "transform scale-10"
+            }`}
+            style={{
+              transform:
+                selectedGame && selectedGame !== game.name
+                  ? "translateX(-50px)"
+                  : "translateX(0)",
+              transition: "transform 0.5s ease-in-out",
+            }}
+          >
+            <img
+              src={game.src}
+              alt={game.name}
+              className="w-32 h-32 object-cover rounded-2xl cursor-pointer"
+              onClick={() => handleClick(game.bgimg, game.name)}
+            />
+            <p className="text-white mt-2">{game.name}</p>
           </div>
-          <div className="text-xl">
-            <IoSettingsSharp />
-          </div>
-          <div>
-            <img src={Avatar} alt="avatar" />
-          </div>
-          <div>{timeString}</div>
-        </div>
+        ))}
       </div>
-      {
-        <div className="flex px-6 items-center space-x-7 mt-28">
-          {games.map((game) => (
-            <div>
-              <img
-                src={game.src}
-                alt={game.name}
-                className="w-32 h-32 object-cover rounded-2xl cursor-pointer"
-                onClick={() => handleClick(game.bgimg)}
-              />
-              <p className="text-white mt-2">{game.name}</p>
-            </div>
-          ))}
-        </div>
-      }
     </div>
   );
 };
